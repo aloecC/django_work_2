@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent #Настройка котор
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.getenv('DEBUG') else False#Режим отладки
+DEBUG = True if os.getenv('DEBUG') else False #Режим отладки
 
 ALLOWED_HOSTS = []#Список доменных имен которые могут обслуживаться нашим приложением
 
