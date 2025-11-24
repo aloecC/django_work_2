@@ -61,7 +61,7 @@
                 <li class="list-group-item">
                     {{ product.name }}
                     {{ product.image }}
-                     class="text-start"{{ product.description }}
+                     class="text-start"{{ product.description|truncatechars:100 }}
                     Категория: {{ product.category }}
                     Цена: {{ product.purchase_price }} рублей
                 </li>
