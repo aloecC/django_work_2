@@ -1,0 +1,17 @@
+{% extends 'catalog/base.html' %}
+
+{% block title%}Каталог{% endblock %}
+
+{% block content %}
+   {% if categories %}
+        <ul class="list-group">
+            {% for category in categories %}
+                <li class="list-group-item">
+                    {{ category.name }} {{ category.description|truncatechars:100 }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет доступных категорий.</p>
+    {% endif %}
+{% endblock %}
