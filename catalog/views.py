@@ -46,3 +46,13 @@ def category_list(request):
         "categories": categories,
     }
     return render(request, 'catalog/catalogs.html', context=context)
+
+
+def category_detail(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category)
+    context = {
+        'category': category,
+        'products': products,
+    }
+    return render(request, 'catalog/category_detail.html', context=context)
