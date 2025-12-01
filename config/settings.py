@@ -32,12 +32,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    'crispy_forms',
     "students",
     "catalog",
     "library",
     "blog"
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 #Список приложений предосталяемых промежуточное ПО,которое обрабатывает входящие запрсы и исходящие ответы
 MIDDLEWARE = [
