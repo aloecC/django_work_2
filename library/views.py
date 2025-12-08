@@ -1,9 +1,47 @@
 from django.shortcuts import render
+
+from library.forms import BookForm, AuthorForm
 from library.models import Book, Author
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
+
+
+class AuthorListView(ListView):
+    model = Author
+    template_name = 'author/authors_list.html'
+    context_object_name = 'authors'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+
+class AuthorDetailView(DetailView):
+    model = Author
+    template_name = 'author/author_detail.html'
+    context_object_name = 'author'
+
+
+class AuthorCreateView(CreateView):
+    model = Author
+    form_class = AuthorForm
+    template_name = 'author/author_form.html'
+    success_url = reverse_lazy('library:books_list')
+
+
+class AuthorUpdateView(UpdateView):
+    model = Author
+    form_class = AuthorForm
+    template_name = 'author/author_form.html'
+    success_url = reverse_lazy('library:books_list')
+
+
+class AuthorDeleteView(DeleteView):
+    model = Author
+    template_name = 'author/author_confirm_delete.html'
+    success_url = reverse_lazy('library:authors_list')
 
 
 class BooksListView(ListView):
@@ -15,7 +53,6 @@ class BooksListView(ListView):
         # Получаем только книги опубликованные после 2000
         queryset = super().get_queryset()
         return queryset
-        #return queryset.filter(publication_date__year__gt=2000)
 
 
 class BookDetailView(DetailView):
@@ -32,14 +69,14 @@ class BookDetailView(DetailView):
 
 class BookCreateView(CreateView):
     model = Book
-    fields = ['title', 'publication_date', 'author']
+    form_class = BookForm
     template_name = 'book/book_form.html'
     success_url = reverse_lazy('library:books_list')
 
 
 class BookUpdateView(UpdateView):
     model = Book
-    fields = ['title', 'publication_date', 'author']
+    form_class = BookForm
     template_name = 'book/book_form.html'
     success_url = reverse_lazy('library:books_list')
 
