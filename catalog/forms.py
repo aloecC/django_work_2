@@ -1,4 +1,8 @@
+import os
+
 from django import forms
+from django.core.files.images import get_image_dimensions
+
 from .models import Product, Category
 from django.core.exceptions import ValidationError
 
@@ -108,8 +112,26 @@ class ProductForm(forms.ModelForm):
                 self.add_error('description', 'Поле "описание" содержит запрещенное слово')
                 break  # Можно выйти из цикла после первой найденной ошибки
 
-    def clean_purchase_price(self):  # Исправлено имя метода на clean_purchase_price
+    def clean_purchase_price(self):
         purchase_price = self.cleaned_data.get('purchase_price')
         if purchase_price is not None and purchase_price < 0:  # Проверяем на None
             raise ValidationError('Цена не может быть отрицательной.')
         return purchase_price  # Возвращаем очищенное значение
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            # Проверяем формат файла
+            if not (image.name.endswith('.jpg') or image.name.endswith('.jpeg') or image.name.endswith('.png')):
+                raise ValidationError('Допустимые форматы: JPEG и PNG.')
+
+            # Проверяем размер файла (5 МБ)
+            if image.size > 5 * 1024 * 1024:  # 5 МБ в байтах
+                raise ValidationError('Размер файла не должен превышать 5 МБ.')
+
+            # Дополнительная проверка размеров изображения
+            width, height = get_image_dimensions(image)
+            if width > 2000 or height > 2000:  # Пример ограничения на размеры
+                raise ValidationError('Ширина и высота изображения не должны превышать 2000 пикселей.')
+
+        return image
